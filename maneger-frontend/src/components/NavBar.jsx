@@ -73,8 +73,8 @@ const NavBar = () => {
           gap={2}
         >
           <Typography variant="h6">User Profile</Typography>
-          <Typography>Name: {user.userName}</Typography>
-          <Typography>Email: {user.email}</Typography>
+          <Typography>Name: {user?.userName}</Typography>
+          <Typography>Email: {user?.email}</Typography>
         </Box>
       </Modal>
     </>
