@@ -112,7 +112,7 @@ const Signup = () => {
               <Typography>Signup</Typography>
             </Button>
             <Typography mt={2}>
-              Don't Already have an account? <a href="/login">Login</a>
+              Already have an account? <a href="/login">Login</a>
             </Typography>
           </Box>
           {error && (
