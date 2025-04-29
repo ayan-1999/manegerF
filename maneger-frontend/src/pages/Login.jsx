@@ -1,14 +1,10 @@
-import {
-  Box,
-  Button,
-  OutlinedInput,
-  Typography,
-} from "@mui/material";
+import { Box, Button, OutlinedInput, Typography } from "@mui/material";
 import React, { useState } from "react";
 import loginImg from "../assets/si.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { theme } from "../utils/theme";
+import useAuthStore from "../store/authStore";
 
 const Login = () => {
   const [loginForm, setLoginForm] = useState({
@@ -21,13 +17,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+
+    const setToken = useAuthStore.getState().setToken;
+    const setUser = useAuthStore.getState().setUser;
     try {
       const res = await axios.post(
         "http://localhost:5001/api/users/login",
         loginForm
       );
-      console.log(res.data.accessToken);
-      localStorage.setItem("token", res.data.accessToken);
+      setToken(res.data.accessToken);
       const currentRes = await axios.get(
         "http://localhost:5001/api/users/current",
         {
@@ -36,6 +34,7 @@ const Login = () => {
           },
         }
       );
+      setUser(currentRes.data);
       navigate("/contacts");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid Credentials");

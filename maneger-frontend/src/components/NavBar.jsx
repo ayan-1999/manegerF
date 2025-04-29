@@ -7,12 +7,15 @@ import {
   Modal,
   Button,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { theme } from "../utils/theme";
+import useAuthStore from "../store/authStore";
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openProfile, setOpenProfile] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const { clearToken } = useAuthStore();
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,11 +23,6 @@ const NavBar = () => {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
   };
 
   const handleProfileClick = () => {
@@ -58,7 +56,7 @@ const NavBar = () => {
         onClose={handleCloseMenu}
       >
         <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={clearToken}>Logout</MenuItem>
       </Menu>
 
       <Modal open={openProfile} onClose={handleCloseProfile}>
@@ -75,8 +73,8 @@ const NavBar = () => {
           gap={2}
         >
           <Typography variant="h6">User Profile</Typography>
-          <Typography>Name: John Doe</Typography>
-          <Typography>Email: john@example.com</Typography>
+          <Typography>Name: {user.userName}</Typography>
+          <Typography>Email: {user.email}</Typography>
         </Box>
       </Modal>
     </>

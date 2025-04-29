@@ -10,9 +10,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import useAuthStore from "./store/authStore";
 
 function App() {
-  const token = localStorage.getItem("token");
+  const token = useAuthStore((state) => state.token);
 
   return (
     <Router>
@@ -20,7 +21,7 @@ function App() {
         <Route
           path="/"
           element={
-            token ? <Navigate to={"/contacts"} /> : <Navigate to={"/signup"} />
+            token ? <Navigate to="/contacts" /> : <Navigate to="/signup" />
           }
         />
         <Route
@@ -35,7 +36,6 @@ function App() {
           path="/contacts"
           element={token ? <Contacts /> : <Navigate to="/login" />}
         />
-
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
